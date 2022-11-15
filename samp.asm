@@ -9,54 +9,60 @@ public sampler
 sampler proc
 	push bp
     mov bp,sp
-    push ax
+    push dx
     push cx
     push bx
-  	mov ax, ss:[bp+6] ;offstet compas frecuencias
+  	mov di, ss:[bp+6] ;offstet compas frecuencias
   	mov si, ss:[bp+4] ;offset compas tempos
+
  leefrecuencia:
- 	cmp ax,24h
+ 	cmp byte ptr [di],24h
  	je finproc1
- 	cmp ax,65h
+ 	cmp byte ptr [si],24h
+ 	je finproc1
+ 	cmp byte ptr [di],65h
  	je do
- 	cmp ax,72h
+ 	cmp byte ptr [di],72h
  	je re
- 	cmp ax,74h
+ 	cmp byte ptr [di],74h
  	je mi
- 	cmp ax,79h
+ 	cmp byte ptr [di],79h
  	je fa
- 	cmp ax,75h
+ 	cmp byte ptr [di],75h
  	je sol
- 	cmp ax,69h
+ 	cmp byte ptr [di],69h
  	je la2
- 	cmp ax,6fh
+ 	cmp byte ptr [di],6fh
  	je s2
- do: mov cx, 4560
- 	cmp si,78h ;x
+ do: 
+ 	mov cx, 4560
+ 	cmp byte ptr [si],78h ;x
 	je redonda2
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca2
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra2
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea2
-re: mov cx, 4063
-	cmp si,78h ;x
+re: 
+	mov cx, 4063
+	cmp byte ptr [si],78h ;x
 	je redonda2
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca2
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra2
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea2
-mi: mov cx, 3619
-	cmp si,78h ;x
+mi: 
+	mov cx, 3619
+	cmp byte ptr [si],78h ;x
 	je redonda2
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca2
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra2
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea2
 
 ;saltos auxiliares 
@@ -75,69 +81,77 @@ jmp corchea
 la2:
 jmp la
 fa: mov cx, 3416
-	cmp si,78h ;x
+	cmp byte ptr [si],78h ;x
 	je redonda
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea
 sol:mov cx, 3043
-	cmp si,78h ;x
+	cmp byte ptr [si],78h ;x
 	je redonda
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea
 la: mov cx, 2711
-	cmp si,78h ;x
+	cmp byte ptr [si],78h ;x
 	je redonda
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea
 s1:	mov cx, 2415
-	cmp si,78h ;x
+	cmp byte ptr [si],78h ;x
 	je redonda
-	cmp si,62h ;b
+	cmp byte ptr [si],62h ;b
 	je blanca
-	cmp si,6eh ;n
+	cmp byte ptr [si],6eh ;n
 	je negra
-	cmp si,63h ;c
+	cmp byte ptr [si],63h ;c
 	je corchea
 redonda:
- mov bx,200
+ mov bx,500
  call play
- inc ax
+ inc di
  inc si
+ xor cx,cx
+ xor bx,bx
  jmp leefrecuencia
 blanca:
-mov bx, 100
+mov bx, 250
 call play
- inc ax
+ inc di
  inc si
+ xor cx,cx
+ xor bx,bx
  jmp leefrecuencia
 negra:
-mov bx, 50
+mov bx, 125
 call play
- inc ax
+ inc di
  inc si
+ xor cx,cx
+ xor bx,bx
  jmp leefrecuencia
 corchea:
-mov bx,25
+mov bx,75
 call play
- inc ax
+ inc di
  inc si
+ xor cx,cx
+ xor bx,bx
  jmp leefrecuencia
 
 finproc:
 pop bp
-pop ax
+pop dx
 pop cx
 pop bx
 ret 4
