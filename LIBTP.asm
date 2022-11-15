@@ -7,8 +7,10 @@
 salto	db 0dh, 0ah, 24h
 errorN	db "Ingrese una nota v", 160, "lida", 0dh, 0ah, 24h
 sePaso	db "Se ha exedido!!! Porfavor ingrese las notas nuevamente", 0dh, 0ah, 24h
-nota	db "Ingrese la nota (D=do, R=re, M=mi, F=fa, S=sol, L=la, I=si", 0dh, 0ah, 24h
+nota	db "Ingrese la nota (E=do, R=re, T=mi, Y=fa, U=sol, I=la, O=si", 0dh, 0ah, 24h
 tiempo	db "Ingrese el tempo (Redonda=x,blanca=b,negra=n,corchea=c)", 0dh, 0ah, 24h
+alertcompas db "cada compas no debe exeder de los 4 tiempos",0dh,0ah,24h
+alertcompas2 db "(redonda=4,blanca=2,negra=1,corchea=1/2)",0dh,0ah,24h
 .code
 
 public mayus
@@ -246,6 +248,12 @@ tempo:
 	mov ah, 9
 	lea dx, tiempo
 	int 21h
+	mov ah, 9
+	lea dx, alertcompas
+	int 21h
+	mov ah, 9
+	lea dx, alertcompas2
+	int 21h
 
 	mov ah,1 				; redondaX=4,blancaB=2,negraN=1,corcheaC 0.5 compas=4 
 	int 21h
@@ -266,30 +274,30 @@ tempo:
 SaveTempo:
 	mov byte ptr[si],al
 	inc si
-	cmp cx,4
+	cmp cx,8
 	je finCarga
 	jmp frecuencia
 esRedonda:
-	add cx,4
-	cmp cx,4
+	add cx,8
+	cmp cx,8
 	ja borro
 	
 	jmp SaveTempo
 esBlanca:
-	add cx,2
-	cmp cx,4
+	add cx,4
+	cmp cx,8
 	ja borro
 	
 	jmp SaveTempo
 esNegra:
-	add cx,1
-	cmp cx,4
+	add cx,2
+	cmp cx,8
 	ja borro
 
 	jmp SaveTempo
 esCorchea:
-	add cx, 1
-	cmp cx,4
+	add cx,1
+	cmp cx,8
 	ja borro
 	
 	jmp SaveTempo
