@@ -2,7 +2,7 @@
 .model small
 .stack 100h
 .data
-
+ salto db 0dh,0ah,24h
 .code
 
 
@@ -26,45 +26,43 @@ frecuencia:
 tempo:
 	mov ah,1 				; redondaX=4,blancaB=2,negraN=1,corcheaC 0.5 compas=4 
 	int 21h
-	cmp si,78h ;x
+	cmp al,78h ;x
 	je redonda
-	cmp si,62h ;b
+	cmp al,62h ;b
 	je blanca
-	cmp si,6eh ;n
+	cmp al,6eh ;n
 	je negra
-	cmp si,63h ;c
+	cmp al,63h ;c
 	je corchea
 SaveTempo:
 	mov byte ptr[si],al
 	inc si
+	cmp cx,4
+	je finCarga
 	jmp frecuencia
 redonda:
 	add cx,4
 	cmp cx,4
 	ja borro
-	cmp cx,4
-	je finCarga
+	
 	jmp SaveTempo
 blanca:
 	add cx,2
 	cmp cx,4
 	ja borro
-	cmp cx,4
-	je finCarga
+	
 	jmp SaveTempo
 negra:
 	add cx,1
 	cmp cx,4
 	ja borro
-	cmp cx,4
-	je finCarga
+
 	jmp SaveTempo
 corchea:
 	add cx, 1
 	cmp cx,4
 	ja borro
-	cmp cx,4
-	je finCarga
+	
 	jmp SaveTempo
 
 	
@@ -76,10 +74,15 @@ borro2:
 	mov byte ptr[bx],24h
 	mov byte ptr[si],24h
 	cmp si,0
-	je inicio
+	je saltar
 	sub si,1
 	sub bx,1
 	jmp borro2
+saltar: 
+	mov ah,9
+	lea dx,salto
+	int 21h
+	jmp inicio
 finCarga:
 pop bx
 pop cx
@@ -87,9 +90,6 @@ pop ax
 pop bp
 ret 4
 samplercarga endp
-
-
-
 end
 
 
