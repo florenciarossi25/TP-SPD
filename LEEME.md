@@ -1,8 +1,8 @@
 # Trabajo Practico Final - Sistemas de Procesamiento de Datos
 
-PROFESORES ADJUNTOS:
-Brushetti, Fabio Sergio
-Iriso, Pedro Facundo
+PROFESORES ADJUNTOS:  
+Brushetti, Fabio Sergio  
+Iriso, Pedro Facundo  
 
 AUTORES:
 Cuellar, Lautaro
