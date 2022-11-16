@@ -1,4 +1,3 @@
-# TP-SPD
 # Trabajo Practico Final - Sistemas de Procesamiento de Datos
 
 PROFESORES ADJUNTOS:
