@@ -5,10 +5,10 @@
 ;nota	db "Ingrese la nota:",0dh, 0ah
 ;		db "1. DO", 0dh, 0ah, "2. RE", 0dh, 0ah, "3. MI", 0dh, 0ah, "4. FA", 0dh, 0ah, "5. SOL", 0dh, 0ah, "6. LA", 0dh, 0ah, "7. SI", 0dh, 0ah, 24h 
 salto	db 0dh, 0ah, 24h
-errorN	db "Ingrese una nota v", 160, "lida", 0dh, 0ah, 24h
+errorN	db "Ingrese una figura v", 160, "lida", 0dh, 0ah, 24h
 sePaso	db "Se ha exedido!!! Porfavor ingrese las notas nuevamente", 0dh, 0ah, 24h
-nota	db "Ingrese la nota (E=do, R=re, T=mi, Y=fa, U=sol, I=la, O=si", 0dh, 0ah, 24h
-tiempo	db "Ingrese el tempo (Redonda=x,blanca=b,negra=n,corchea=c)", 0dh, 0ah, 24h
+nota	db "Primero ingrese la nota (E=do, R=re, T=mi, Y=fa, U=sol, I=la, O=si", 0dh, 0ah, 24h
+tiempo	db "Luego ingrese el tempo (Redonda=x,blanca=b,negra=n,corchea=c)", 0dh, 0ah, 24h
 alertcompas db "cada compas no debe exeder de los 4 tiempos",0dh,0ah,24h
 alertcompas2 db "(redonda=4,blanca=2,negra=1,corchea=1/2)",0dh,0ah,24h
 .code
@@ -145,18 +145,18 @@ fa: mov cx, 3416
 	cmp byte ptr [si],62h ;b
 	je blanca
 	cmp byte ptr [si],6eh ;n
-	je negra
+	je negraaux
 	cmp byte ptr [si],63h ;c
-	je corchea
+	je corcheaaux
 sol:mov cx, 3043
 	cmp byte ptr [si],78h ;x
 	je redonda
 	cmp byte ptr [si],62h ;b
 	je blanca
 	cmp byte ptr [si],6eh ;n
-	je negra
+	je negraaux
 	cmp byte ptr [si],63h ;c
-	je corchea
+	je corcheaaux
 la: mov cx, 2711
 	cmp byte ptr [si],78h ;x
 	je redonda
@@ -176,34 +176,62 @@ s1:	mov cx, 2415
 	cmp byte ptr [si],63h ;c
 	je corchea
 redonda:
- mov bx,500
+ mov bx,1000
  call play
  inc di
  inc si
  xor cx,cx
  xor bx,bx
+ mov cx,0
+ mov bx,10
+call play
+
+ xor cx,cx
+ xor bx,bx
  jmp leefrecuencia
+negraaux:
+jmp negra
+corcheaaux:
+jmp corchea
 blanca:
+mov bx, 500
+call play
+ inc di
+ inc si
+ xor cx,cx
+ xor bx,bx
+ mov cx,0
+ mov bx,10
+call play
+
+ xor cx,cx
+ xor bx,bx
+ jmp leefrecuencia
+negra:
 mov bx, 250
 call play
  inc di
  inc si
  xor cx,cx
  xor bx,bx
+mov cx,0
+ mov bx,10
+call play
+
+ xor cx,cx
+ xor bx,bx
  jmp leefrecuencia
-negra:
-mov bx, 125
+corchea:
+mov bx,125
 call play
  inc di
  inc si
  xor cx,cx
  xor bx,bx
- jmp leefrecuencia
-corchea:
-mov bx,75
+ mov cx,0
+ mov bx,10
 call play
- inc di
- inc si
+
  xor cx,cx
  xor bx,bx
  jmp leefrecuencia
@@ -229,32 +257,36 @@ proc samplercarga
 
 inicio:
     mov cx,0
-frecuencia: 
-	
 	mov ah, 9
 	lea dx, nota
 	int 21h
+	mov ah, 9
+	lea dx, salto
+	int 21h
+	mov ah, 9
+	lea dx, tiempo
+	int 21h
+	mov ah, 9
+	lea dx, salto
+	int 21h
+	mov ah, 9
+	lea dx, alertcompas
+	int 21h
+	mov ah, 9
+	lea dx, salto
+	int 21h
+	mov ah, 9
+	lea dx, alertcompas2
+	int 21h
+frecuencia: 
+	
+
 
     mov ah, 1 
     int 21h 
     mov byte ptr[bx],al
     inc bx
 tempo:
-	mov ah, 0Fh				;LIMPIA LA PANTALLA
-	int 10h
-	mov ah, 0
-	int 10h
-
-	mov ah, 9
-	lea dx, tiempo
-	int 21h
-	mov ah, 9
-	lea dx, alertcompas
-	int 21h
-	mov ah, 9
-	lea dx, alertcompas2
-	int 21h
-
 	mov ah,1 				; redondaX=4,blancaB=2,negraN=1,corcheaC 0.5 compas=4 
 	int 21h
 
@@ -312,6 +344,7 @@ borro:
 	mov ah, 9
 	lea dx, sePaso
 	int 21h
+
 	mov bx, ss:[bp+6] ;offstet compas frecuencias
   	mov si, ss:[bp+4] ;offset compas tempos
   	mov cx, 8
