@@ -284,15 +284,14 @@ sampler endp
 ;SAMPLERCARGA----------------------------------------------------------------------------------------------------------
 proc samplercarga
 	push bp
-    mov bp,sp
+   	mov bp,sp
     push ax
     push cx
     push bx
 
-  	mov bx, ss:[bp+6] ;offstet compas frecuencias
-  	mov si, ss:[bp+4] ;offset compas tempos
-
 inicio:
+	mov bx, ss:[bp+6] ;offstet compas frecuencias
+  	mov si, ss:[bp+4] ;offset compas tempos
     mov cx,0
 frecuencia: 
 	mov ah, 9
