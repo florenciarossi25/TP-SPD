@@ -212,7 +212,7 @@ s1:	mov cx, 2415
 	cmp byte ptr [si],63h ;c
 	je corchea
 redonda:
-	 mov bx,1000
+	 mov bx,100
 	 call play
 	 inc di
 	 inc si
@@ -230,7 +230,7 @@ jmp negra
 corcheaaux:
 jmp corchea
 blanca:
-mov bx, 500
+mov bx, 50
 call play
  inc di
  inc si
@@ -244,7 +244,7 @@ call play
  xor bx,bx
  jmp leefrecuencia
 negra:
-mov bx, 250
+mov bx, 25
 call play
  inc di
  inc si
@@ -258,7 +258,7 @@ call play
  xor bx,bx
  jmp leefrecuencia
 corchea:
-mov bx,125
+mov bx,12
 call play
  inc di
  inc si
