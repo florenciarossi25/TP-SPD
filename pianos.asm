@@ -37,8 +37,13 @@ compas3f db 10 dup (24h), 24h
 compas3t db 10 dup (24h), 24h
 compas4f db 10 dup (24h), 24h
 compas4t db 10 dup (24h), 24h
-ingresenc db "Ingrese el proximo compas",0dh,0ah,24h
-seguro   db "Desea guardar el compas y continuar?", 0dh, 0ah
+ingrese db  "Ingrese el",24h
+ingrese1 db " primer compas",0dh,0ah,24h
+ingrese2 db " segundo compas",0dh,0ah,24h
+ingrese3 db " tercer compas",0dh,0ah,24h
+ingrese4 db " cuarto compas",0dh,0ah,24h
+seguro  db 0dh, 0ah
+        db "Desea guardar el compas y continuar?", 0dh, 0ah
         db "1) SI, GUARDAR", 0dh, 0ah
         db "2) NO, REGRABAR EL COMPAS", 0dh, 0ah, 24h
 
@@ -101,11 +106,19 @@ samp:
   mov ah, 0
   int 10h
 
-  mov ah,9
-  lea dx, salto
-  int 21h
+ 
 ;-----------------------------primer compas--------------------------------------
 comp1:
+  mov ah, 9
+  lea dx, ingrese
+  int 21h
+  mov ah, 09
+  mov bl, 11
+  mov cx, 14
+  int 10h
+  mov ah, 9
+  lea dx, ingrese1
+  int 21h
   lea bx, compas1f
   push bx
   lea cx, compas1t
@@ -137,7 +150,14 @@ comp2:
   int 10h
 
   mov ah,9
-  lea dx, ingresenc
+  lea dx, ingrese
+  int 21h
+  mov ah, 09
+  mov bl, 11
+  mov cx, 15
+  int 10h 
+  mov ah, 9
+  lea dx, ingrese2
   int 21h
   lea bx, compas2f
   lea cx, compas2t
@@ -171,7 +191,14 @@ comp3:
   int 10h
 
   mov ah,9
-  lea dx, ingresenc
+  lea dx, ingrese
+  int 21h
+  mov ah, 09
+  mov bl, 11
+  mov cx, 14
+  int 10h  
+  mov ah,9
+  lea dx, ingrese3
   int 21h
 
 
@@ -206,8 +233,15 @@ comp4:
   int 10h
 
   mov ah,9
-  lea dx, ingresenc
+  lea dx, ingrese
   int 21h
+  mov ah, 09
+  mov bl, 11
+  mov cx, 14
+  int 10h
+  mov ah,9
+  lea dx, ingrese4
+  int 21h  
   mov ah,9
   lea dx, salto
   int 21h

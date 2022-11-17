@@ -171,6 +171,8 @@ pGeneral endp
 
 ;DO-----------------------------------------------------------------------------------------------------------------------------
 pDo proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -275,11 +277,16 @@ int 21h
 mov ah, 9
 lea dx, pianoDosDO
 int 21h
+
+pop bx
+pop cx
 ret
 pDo endp
 
 ;RE-----------------------------------------------------------------------------------------------------------------------------
 pRe proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -384,11 +391,16 @@ int 21h
 mov ah, 9
 lea dx, pianoDosRE
 int 21h
+
+pop bx
+pop cx
 ret
 pRe endp
 
 ;MI-----------------------------------------------------------------------------------------------------------------------------
 pMi proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -494,11 +506,15 @@ mov ah, 9
 lea dx, pianoDosMI
 int 21h
 
+pop bx
+pop cx
 ret
 pMi endp
 
 ;FA-----------------------------------------------------------------------------------------------------------------------------
 pFa proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -604,11 +620,15 @@ mov ah, 9
 lea dx, pianoDosFA
 int 21h
 
+pop bx
+pop cx
 ret
 pFa endp
 
 ;SOL----------------------------------------------------------------------------------------------------------------------------
 pSol proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -714,11 +734,15 @@ mov ah, 9
 lea dx, pianoDosSOL
 int 21h
 
+pop bx 
+pop cx
 ret
 pSol endp
 
 ;LA-----------------------------------------------------------------------------------------------------------------------------
 pLa proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -824,11 +848,15 @@ mov ah, 9
 lea dx, pianoDosLA	
 int 21h
 
+pop bx 
+pop cx
 ret
 pLa endp
 
 ;SI-----------------------------------------------------------------------------------------------------------------------------
 pSi proc
+push cx
+push bx
 
 mov ah, 0Fh
 int 10h
@@ -934,6 +962,8 @@ mov ah, 9
 lea dx, pianoDosSI
 int 21h
 
+pop bx 
+pop cx
 ret
 pSi endp
 
