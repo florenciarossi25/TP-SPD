@@ -9,7 +9,7 @@ error2	db 32,32,32,32
 				db "ERROR! Ingrese un tiempo v", 160, "lido", 0dh, 0ah, 0dh, 0ah, 24h
 sePaso	db "Se ha exedido!!! Porfavor ingrese las notas nuevamente", 0dh, 0ah, 24h
 
-ref		db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32 
+ref		db 32,32,32,32,32,32,32,32,32,32,32
 			db "   Cada compas no debe exceder de los 4 tiempos!",0dh,0ah
 			db 32,32,32,32,32,32,32,32,32,32,32,32,32 
 			db "        4           2           1           1/2 ",0dh,0ah
@@ -26,7 +26,7 @@ ref		db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
 			db " G = Sol ", 179 
 			db " A = La ", 179 
 			db " B = Si ", 179
-			db " S = Silencio ", 0dh, 0ah,0dh,0ah,24h
+			db " S= Silencio ", 0dh, 0ah,0dh,0ah,24h
 
 nota  	db 0dh,0ah,0dh,0ah
 				db "Ingrese la nota: ", 24h

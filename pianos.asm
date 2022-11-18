@@ -27,7 +27,9 @@ salto db 0dh, 0ah, 24h
 menuini db "Bienvenido sea usted.", 0dh, 0ah
         db "1) Para tocar piano", 0dh, 0ah
         db "2) Para usar sampler",0dh, 0ah
-        db "3) Reproducir la ", 163, "ltima canci", 162, "n", 0dh, 0ah
+        db "3) Reproducir la ", 163, "ltima canci", 162, "n guardada", 0dh, 0ah
+        db "4) reproducir tetris"
+        db " 5) reproducir TuTurrito", 0dh,0ah
         db "0) Para Salir",0dh, 0ah,24h
 compas1f db 10 dup (24h), 24h
 compas1t db 10 dup (24h), 24h
@@ -37,6 +39,10 @@ compas3f db 10 dup (24h), 24h
 compas3t db 10 dup (24h), 24h
 compas4f db 10 dup (24h), 24h
 compas4t db 10 dup (24h), 24h
+tetrisf  db "AEFGFEDDFAGFEEFGAFDD",24h
+tetrist  db "bnnbnnbnnbnnbnbbbbbb",24h
+turrof  db "CDEFEDEFAGGGGGGGFEDCGGGGGFEDCCDEFDDDDAGGGGGGGGFEDCGGGGGFEEEEE",24h
+turrot  db "rrrbbrrrbrbnnnnnbnbbnnnnnbnbrrrrbbrrrbrnnnnnnnbnbbnnnnnbnbbbb",24h
 ingrese db  "Ingrese el",24h
 ingrese1 db " primer compas",0dh,0ah,24h
 ingrese2 db " segundo compas",0dh,0ah,24h
@@ -82,9 +88,21 @@ menu:
   je samp
   cmp al, '3'
   je reproduce1
+  cmp al, '4'
+  je  tetris
+  cmp al, '5'
+  je turro
   cmp al, '0'
   je fin1
 
+  jmp menu
+
+turro:
+  lea bx, turrof
+  push bx
+  lea cx, turrot
+  push cx
+  call sampler
   jmp menu
 
 piano:
@@ -95,6 +113,14 @@ piano:
 
   call pianoPlay
   jmp menu
+tetris:
+  lea bx, tetrisf
+  push bx
+  lea cx, tetrist
+  push cx
+  call sampler
+  jmp menu
+
 
 fin1:
   jmp fin 
