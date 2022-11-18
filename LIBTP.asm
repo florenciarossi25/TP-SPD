@@ -3,8 +3,10 @@
 .stack 100h
 .data
 salto	db 0dh, 0ah, 24h
-error1	db "Ingrese una nota v", 160, "lida", 0dh, 0ah, 24h
-error2	db "Ingrese una figura v", 160, "lida", 0dh, 0ah, 24h
+error1	db 32,32,32,32,32,32
+				db "ERROR! Ingrese una nota v", 160, "lida", 24h
+error2	db 32,32,32,32
+				db "ERROR! Ingrese un tiempo v", 160, "lido", 0dh, 0ah, 0dh, 0ah, 24h
 sePaso	db "Se ha exedido!!! Porfavor ingrese las notas nuevamente", 0dh, 0ah, 24h
 
 ref		db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32 
@@ -12,24 +14,29 @@ ref		db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
 			db 32,32,32,32,32,32,32,32,32,32,32,32,32 
 			db "        4           2           1           1/2 ",0dh,0ah
 			db 32,32,32,32,32,32,32,32,32,32,32,32,32 
-			db " X = Redonda ", 179
+			db " R = Redonda ", 179
 			db " B = Blanca ", 179
 			db " N = Negra ", 179
 			db " C = Corchea ", 0dh, 0ah, 0dh, 0ah
-			db 32,32,32,32,32,32,32,32
+			db 32,32,32,32
 			db " C = Do ", 179
 			db " D = Re ", 179
 			db " E = Mi ", 179 
 			db " F = Fa ", 179 
 			db " G = Sol ", 179 
 			db " A = La ", 179 
-			db " B = Si ", 0dh, 0ah, 0dh, 0ah, 24h
+			db " B = Si ", 179
+			db "S= Silencio ", 0dh, 0ah,0dh,0ah,24h
 
-nota  db "Ingrese la nota: ", 24h
-tiempo db "Ingrese el tiempo: ", 24h
+nota  	db 0dh,0ah,0dh,0ah
+				db "Ingrese la nota: ", 24h
+tiempo 	db "Ingrese el tiempo: ", 24h
+
 menusal db "Para volver al menu presione 'M'", 0dh, 0ah, 24h
-msg0		db 0dh,0ah,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32 
-				db "/ Estructura del compas /", 0dh, 0ah, 0dh, 0ah, 24h
+
+msg0		db 0dh,0ah,0dh,0ah,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32 
+				db "/ Estructura del compas /", 0dh, 0ah, 24h
+
 msg1		db "Nota(s): ", 24h
 notaDo	db "Do ", 24h
 notaRe	db "Re ", 24h
@@ -61,6 +68,7 @@ extrn pFa:proc
 extrn pSol:proc
 extrn pLa:proc
 extrn pSi:proc
+
 
 ;MAYUS-----------------------------------------------------------------------------------------------------------------
 mayus proc
@@ -128,7 +136,7 @@ sampler proc
  	cmp byte ptr [di],'D'
  	je re
  	cmp byte ptr [di],'E'
- 	je mi
+ 	je mi2
  	cmp byte ptr [di],'F'
  	je fa1
  	cmp byte ptr [di],'G'
@@ -137,6 +145,10 @@ sampler proc
  	je la2
  	cmp byte ptr [di],'B'
  	je s2
+ 	cmp byte ptr [di],'S'
+ 	jmp silencio
+mi2:
+jmp mi
 fa1:
 jmp fa
 sol1:
@@ -147,12 +159,25 @@ la2:
 jmp la
 s2: 
 jmp s1
+silencio:
+	call pGeneral
+	xor cx,cx
+	xor bx,bx
+	mov cx, 1
+	cmp byte ptr [si],72h ;r
+	je redonda2
+	cmp byte ptr [si],62h ;b
+	je blanca2
+	cmp byte ptr [si],6eh ;n
+	je negra2
+	cmp byte ptr [si],63h ;c
+	je corchea2
 do: 
 	call pDo
 	xor cx,cx
 	xor bx,bx
 	mov cx, 4560
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda2
 	cmp byte ptr [si],62h ;b
 	je blanca2
@@ -165,7 +190,7 @@ re:
 	xor cx,cx
 	xor bx,bx
 	mov cx, 4063
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda2
 	cmp byte ptr [si],62h ;b
 	je blanca2
@@ -178,7 +203,7 @@ mi:
 	xor cx,cx
  	xor bx,bx
 	mov cx, 3619
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda2
 	cmp byte ptr [si],62h ;b
 	je blanca2
@@ -201,7 +226,7 @@ fa:
 	xor cx,cx
  	xor bx,bx
 	mov cx, 3416
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda2
 	cmp byte ptr [si],62h ;b
 	je blanca2
@@ -214,7 +239,7 @@ sol:
 	xor cx,cx
  	xor bx,bx
 	mov cx, 3043
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda
 	cmp byte ptr [si],62h ;b
 	je blanca
@@ -227,7 +252,7 @@ la:
 	xor cx,cx
  	xor bx,bx
 	mov cx, 2711
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda
 	cmp byte ptr [si],62h ;b
 	je blanca
@@ -240,7 +265,7 @@ s1:
 	xor cx,cx
 	xor bx,bx
 	mov cx, 2415
-	cmp byte ptr [si],78h ;x
+	cmp byte ptr [si],72h ;r
 	je redonda
 	cmp byte ptr [si],62h ;b
 	je blanca
@@ -249,13 +274,13 @@ s1:
 	cmp byte ptr [si],63h ;c
 	je corchea
 redonda:
-	mov bx,4000
+	mov bx,500
 	call play
 	inc di
 	inc si
 	xor cx,cx
 	xor bx,bx
-	mov cx,0
+	mov cx,1
 	mov bx,10
 	call play
 
@@ -267,13 +292,13 @@ jmp negra
 corcheaaux:
 jmp corchea
 blanca:
-	mov bx, 1990
+	mov bx, 250
 	call play
 	inc di
 	inc si
 	xor cx,cx
 	xor bx,bx
-	mov cx,0
+	mov cx,1
 	mov bx,10
 	call play
 
@@ -281,13 +306,13 @@ blanca:
 	xor bx,bx
 	jmp leefrecuencia
 negra:
-mov bx, 990
+mov bx, 120
 call play
  inc di
  inc si
  xor cx,cx
  xor bx,bx
-mov cx,0
+mov cx,1
  mov bx,10
 call play
 
@@ -295,13 +320,13 @@ call play
  xor bx,bx
  jmp leefrecuencia
 corchea:
-mov bx,490
+mov bx,60
 call play
  inc di
  inc si
  xor cx,cx
  xor bx,bx
- mov cx,0
+ mov cx,1
  mov bx,10
 call play
 
@@ -358,8 +383,10 @@ frecuencia:
     je cargo
     cmp al, 'B'
     je cargo
-
-    mov ah, 9
+    cmp al,	'S'
+    je cargo    
+	
+	mov ah, 9
 	lea dx, error1
 	int 21h
 	jmp frecuencia
@@ -377,11 +404,8 @@ tempo:
 
 	mov ah,1 				; redondaX=4,blancaB=2,negraN=1,corcheaC 0.5 compas=4 
 	int 21h
-	mov ah, 9
-	lea dx, salto
-	int 21h
 
-	cmp al,78h ;x
+	cmp al,72h ;r
 	je esRedonda
 	cmp al,62h ;b
 	je esBlanca
@@ -753,7 +777,7 @@ sigo:
 	int 21h
 
 frec:
-	cmp byte ptr[bx], 'x'
+	cmp byte ptr[bx], 'r'
 	je red
 	cmp byte ptr[bx], 'b'
 	je bla

@@ -44,8 +44,7 @@ ingrese3 db " tercer compas",0dh,0ah,24h
 ingrese4 db " cuarto compas",0dh,0ah,24h
 seguro  db 0dh, 0ah
         db "Desea guardar el compas y continuar?", 0dh, 0ah
-        db "1) SI, GUARDAR", 0dh, 0ah
-        db "2) NO, REGRABAR EL COMPAS", 0dh, 0ah, 24h
+        db "1 - Guardar / 2 - Regrabar : ",24h
 
 suena   db "Su grabaci", 163, "n suena as",161, " :)", 0dh, 0ah, 24h
 .code
@@ -56,7 +55,7 @@ extrn mayus:proc
 extrn samplercarga:proc
 extrn sampler:proc
 extrn muestraC:proc
-
+extrn titles:proc
 main proc
 
   mov ax, @data
@@ -68,6 +67,8 @@ menu:
   mov ah, 0
   int 10h
 
+  call titles
+   
   mov ah,9
   lea dx, menuini
   int 21h
@@ -106,7 +107,9 @@ samp:
   mov ah, 0
   int 10h
 
- 
+  mov ah,9
+  lea dx, salto
+  int 21h
 ;-----------------------------primer compas--------------------------------------
 comp1:
   mov ah, 9
@@ -119,6 +122,12 @@ comp1:
   mov ah, 9
   lea dx, ingrese1
   int 21h
+
+  mov ah, 0Fh
+  int 10h
+  mov ah, 0
+  int 10h
+
   lea bx, compas1f
   push bx
   lea cx, compas1t
@@ -140,6 +149,9 @@ seg1:
   cmp al, '1'
   je comp2
   cmp al, '2'
+  mov ah,9
+  lea dx, salto
+  int 21h
   je comp1
   jmp seg1
 ;--------------------------------segundo compas-------------------------------------------------
@@ -241,7 +253,7 @@ comp4:
   int 10h
   mov ah,9
   lea dx, ingrese4
-  int 21h  
+  int 21h
   mov ah,9
   lea dx, salto
   int 21h
