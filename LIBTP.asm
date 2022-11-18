@@ -26,7 +26,7 @@ ref		db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
 			db " G = Sol ", 179 
 			db " A = La ", 179 
 			db " B = Si ", 179
-			db "S= Silencio ", 0dh, 0ah,0dh,0ah,24h
+			db " S = Silencio ", 0dh, 0ah,0dh,0ah,24h
 
 nota  	db 0dh,0ah,0dh,0ah
 				db "Ingrese la nota: ", 24h
